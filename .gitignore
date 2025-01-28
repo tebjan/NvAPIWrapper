@@ -246,3 +246,6 @@ ModelManifest.xml
 R375-developer/*
 R410-developer/*
 /R560-developer/
+
+# Custom
+R470-developer/*

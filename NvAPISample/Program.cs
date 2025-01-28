@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ConsoleUtilities;
 using NvAPIWrapper;
 using NvAPIWrapper.Display;
 using NvAPIWrapper.GPU;
 using NvAPIWrapper.Mosaic;
+using NvAPIWrapper.Native;
 
 namespace NvAPISample
 {
@@ -17,6 +19,7 @@ namespace NvAPISample
             NVIDIA.Initialize();
             var navigation = new Dictionary<object, Action>
             {
+                {"Temp Test", TempTest},
                 {"Connected Displays", PrintConnectedDisplays},
                 {"Disconnected Displays", PrintDisconnectedDisplays},
                 {"Display Configurations", PrintDisplayPathInformation},
@@ -34,7 +37,7 @@ namespace NvAPISample
             ConsoleNavigation.Default.PrintNavigation(
                 navigation.Keys.ToArray(),
                 (i, o) => navigation[o](),
-                "Select an execution line to browse NvAPIWrapper functionalities."
+                "Select an execution line to browse NvAPIWrapper functionalists."
             );
         }
 
@@ -120,6 +123,55 @@ namespace NvAPISample
                 ConsoleWriter.Default.WriteObject(gpu.PerformanceStatesInfo, 3);
             }, "Select a GPU to show performance states configuration");
         }
+
+        private static void TempTest()
+        {
+            ConsoleWriter.Default.PrintCaption("PhysicalGPU.GetPhysicalGPUs()");
+            ConsoleNavigation.Default.PrintNavigation(PhysicalGPU.GetPhysicalGPUs(), (i, gpu) =>
+            {
+                ConsoleWriter.Default.PrintCaption("Temp Test");
+
+                // find bits
+                var maxBit = 0;
+                for (; maxBit < 32; maxBit++)
+                {
+                    try
+                    {
+                        GPUApi.QueryThermalSensors(gpu.Handle, 1u << maxBit);
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+
+                if (maxBit == 0)
+                {
+                    return;
+                }
+
+                while (true)
+                {
+                    try
+                    {
+                        var temp = GPUApi.QueryThermalSensors(gpu.Handle, (1u << maxBit) - 1);
+                        ConsoleWriter.Default.WriteObject(
+                            new
+                            {
+                                GetThermalSettings = gpu.ThermalInformation.ThermalSensors.ToArray(),
+                                QueryThermalSensors = temp.Temperatures.Take(maxBit).Select((t) => t.ToString("F2")),
+                            }
+                        );
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
+                    Thread.Sleep(500);
+                }
+            }, "Select a GPU to show thermal sensor values");
+        }
+
 
         private static void PrintGPUSensors()
         {
