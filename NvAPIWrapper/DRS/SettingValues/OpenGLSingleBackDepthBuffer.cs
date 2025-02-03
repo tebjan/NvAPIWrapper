@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OpenGLSingleBackDepthBuffer : uint
+    public enum OpenGLSingleBackDepthBuffer : UInt32
     {
         Disable = 0x0,
 

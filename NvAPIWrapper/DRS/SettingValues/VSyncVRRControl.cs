@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum VSyncVRRControl : uint
+    public enum VSyncVRRControl : UInt32
     {
         Disable = 0x0,
 

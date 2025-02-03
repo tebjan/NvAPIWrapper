@@ -1,11 +1,15 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum AnselWhiteListed : uint
+    public enum FrlFPS : UInt32
     {
-        Disallowed = 0x0,
+        Disabled = 0x0,
 
-        Allowed = 0x1,
+        Minimum = 0x0,
+
+        Maximum = 0x3FF,
 
         Default = 0x0
     }

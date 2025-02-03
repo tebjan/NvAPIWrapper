@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum AnselAllow : uint
+    public enum AnselAllow : UInt32
     {
         Disallowed = 0x0,
 

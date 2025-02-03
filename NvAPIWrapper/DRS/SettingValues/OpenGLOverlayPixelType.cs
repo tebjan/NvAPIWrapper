@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OpenGLOverlayPixelType : uint
+    public enum OpenGLOverlayPixelType : UInt32
     {
         None = 0x0,
 

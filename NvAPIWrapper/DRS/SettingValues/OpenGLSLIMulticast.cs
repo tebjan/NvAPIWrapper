@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OpenGLSLIMulticast : uint
+    public enum OpenGLSLIMulticast : UInt32
     {
         Disable = 0x0,
 

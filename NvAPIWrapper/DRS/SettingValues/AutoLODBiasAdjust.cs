@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum AutoLODBiasAdjust : uint
+    public enum AutoLODBiasAdjust : UInt32
     {
         Off = 0x0,
 

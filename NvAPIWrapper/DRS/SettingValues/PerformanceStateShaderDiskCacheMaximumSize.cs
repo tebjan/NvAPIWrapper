@@ -3,15 +3,13 @@ using System;
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum PreRenderLimit : UInt32
+    public enum PerformanceStateShaderDiskCacheMaximumSize : UInt32
     {
         Minimum = 0x0,
 
-        Maximum = 0xFF,
+        Maximum = 0xFFFFFFFF,
 
-        ApplicationControlled = 0x0,
-
-        Default = 0x0
+        Default = 0x1000
     }
 #pragma warning restore 1591
 }

@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum RefreshRateOverride : uint
+    public enum RefreshRateOverride : UInt32
     {
         ApplicationControlled = 0x0,
 

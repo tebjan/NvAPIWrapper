@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum SLIGPUCount : uint
+    public enum SLIGPUCount : UInt32
     {
         AutoSelect = 0x0,
 

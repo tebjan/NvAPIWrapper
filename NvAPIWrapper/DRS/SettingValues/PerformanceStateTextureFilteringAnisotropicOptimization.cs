@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum PerformanceStateTextureFilteringAnisotropicOptimization : uint
+    public enum PerformanceStateTextureFilteringAnisotropicOptimization : UInt32
     {
         Off = 0x0,
 

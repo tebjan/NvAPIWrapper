@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum ApplicationProfileNotificationTimeOut : uint
+    public enum ApplicationProfileNotificationTimeOut : UInt32
     {
         Disabled = 0x0,
 

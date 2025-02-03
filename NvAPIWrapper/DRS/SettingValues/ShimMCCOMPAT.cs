@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum ShimMCCOMPAT : uint
+    public enum ShimMCCOMPAT : UInt32
     {
         Integrated = 0x0,
 

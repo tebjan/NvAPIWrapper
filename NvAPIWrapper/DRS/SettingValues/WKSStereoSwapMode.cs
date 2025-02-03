@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum WKSStereoSwapMode : uint
+    public enum WKSStereoSwapMode : UInt32
     {
         ApplicationControl = 0x0,
 
@@ -10,6 +12,8 @@ namespace NvAPIWrapper.DRS.SettingValues
         PerEyePair = 0x2,
 
         LegacyBehavior = 0x3,
+
+        PerEyeForSwapGroup = 0x4,
 
         Default = 0x0
     }

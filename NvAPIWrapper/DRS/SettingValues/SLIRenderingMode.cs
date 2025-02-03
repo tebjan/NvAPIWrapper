@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum SLIRenderingMode : uint
+    public enum SLIRenderingMode : UInt32
     {
         AutoSelect = 0x0,
 

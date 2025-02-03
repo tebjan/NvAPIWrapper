@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum AntiAliasingModeSelector : uint
+    public enum AntiAliasingModeSelector : UInt32
     {
         Mask = 0x3,
 

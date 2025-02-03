@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum SLIPredefinedGPUCountDX10 : uint
+    public enum SLIPredefinedGPUCountDX10 : UInt32
     {
         AutoSelect = 0x0,
 

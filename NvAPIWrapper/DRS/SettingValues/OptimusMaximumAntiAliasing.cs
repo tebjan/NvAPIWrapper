@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OptimusMaximumAntiAliasing : uint
+    public enum OptimusMaximumAntiAliasing : UInt32
     {
         Minimum = 0x0,
 

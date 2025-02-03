@@ -31,6 +31,13 @@ namespace NvAPICodeGenerator.Parser.Models
                 return Value.Substring(2, Value.Length - 3);
             }
 
+            if (Value.StartsWith("0x") && Value.EndsWith("U"))
+            {
+                // remove last charcater
+                var v = Value.Substring(0, Value.Length - 1);
+                return Convert.ToInt64(v.Substring(2), 16);
+            }
+
             if (Value.StartsWith("0x"))
             {
                 return Convert.ToInt64(Value.Substring(2), 16);

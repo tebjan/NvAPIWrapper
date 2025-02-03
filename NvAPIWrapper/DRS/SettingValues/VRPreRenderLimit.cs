@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum VRPreRenderLimit : uint
+    public enum VRPreRenderLimit : UInt32
     {
         Minimum = 0x0,
 

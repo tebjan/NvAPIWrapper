@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum QualityEnhancements : uint
+    public enum QualityEnhancements : UInt32
     {
         HighQuality = 0xFFFFFFF6,
 

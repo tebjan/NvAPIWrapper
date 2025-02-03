@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum PhysxIndicator : uint
+    public enum PhysxIndicator : UInt32
     {
         Disabled = 0x34534064,
 

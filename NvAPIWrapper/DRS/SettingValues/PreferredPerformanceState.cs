@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum PreferredPerformanceState : uint
+    public enum PreferredPerformanceState : UInt32
     {
         Adaptive = 0x0,
 

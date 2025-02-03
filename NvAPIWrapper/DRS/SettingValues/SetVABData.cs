@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum SetVABData : uint
+    public enum SetVABData : UInt32
     {
         Zero = 0x0,
 

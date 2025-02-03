@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OpenGLDefaultSwapInterval : uint
+    public enum OpenGLDefaultSwapInterval : UInt32
     {
         Tear = 0x0,
 

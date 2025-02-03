@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum VRRApplicationOverrideRequestState : uint
+    public enum VRRApplicationOverrideRequestState : UInt32
     {
         Allow = 0x0,
 

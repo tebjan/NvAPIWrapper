@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum ShimRenderingOptions : uint
+    public enum ShimRenderingOptions : UInt32
     {
         DefaultRenderingMode = 0x0,
 
@@ -52,6 +54,12 @@ namespace NvAPIWrapper.DRS.SettingValues
         HandleWin7AsyncRuntimeBug = 0x400000,
 
         ExplicitAdapterOptedByApplication = 0x800000,
+
+        AllowDynamicDisplayMuxSwitch = 0x1000000,
+
+        DisAllowDynamicDisplayMuxSwitch = 0x2000000,
+
+        DisableTuringPowerPolicy = 0x4000000,
 
         Default = 0x0
     }

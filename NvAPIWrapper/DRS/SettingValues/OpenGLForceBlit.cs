@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OpenGLForceBlit : uint
+    public enum OpenGLForceBlit : UInt32
     {
         On = 0x1,
 

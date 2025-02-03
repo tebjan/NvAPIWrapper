@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum WKSAPIStereoMode : uint
+    public enum WKSAPIStereoMode : UInt32
     {
         ShutterGlasses = 0x0,
 

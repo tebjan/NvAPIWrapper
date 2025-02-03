@@ -1,7 +1,9 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum AnisotropicModeSelector : uint
+    public enum AnisotropicModeSelector : UInt32
     {
         Mask = 0xF,
 

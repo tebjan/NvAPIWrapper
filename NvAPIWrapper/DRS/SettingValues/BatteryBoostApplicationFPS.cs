@@ -1,15 +1,15 @@
+using System;
+
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum BatteryBoost : uint
+    public enum BatteryBoostApplicationFPS : UInt32
     {
         Minimum = 0x1,
 
-        Maximum = 0xFF,
+        Maximum = 0x3FF,
 
-        Enabled = 0x10000000,
-
-        Disabled = 0x0,
+        NoOverride = 0x0,
 
         Default = 0x0
     }

@@ -3,11 +3,11 @@ using System;
 namespace NvAPIWrapper.DRS.SettingValues
 {
 #pragma warning disable 1591
-    public enum OpenGLForceStereo : UInt32
+    public enum ExternalQuietMode : UInt32
     {
-        Off = 0x0,
-
         On = 0x1,
+
+        Off = 0x0,
 
         Default = 0x0
     }
