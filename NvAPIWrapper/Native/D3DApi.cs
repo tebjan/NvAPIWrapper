@@ -358,6 +358,8 @@ namespace NvAPIWrapper.Native
         private static readonly Delegates.D3D.NvAPI_JoinPresentBarrier _joinPresentBarrierDelegate =
             DelegateFactory.GetDelegate<Delegates.D3D.NvAPI_JoinPresentBarrier>();
 
+        private static JoinPresentBarrierParams _joinParams = JoinPresentBarrierParams.CreateDefault();
+
         /// <summary>
         ///     This API adds a registered PresentBarrier client to the presentBarrier.
         ///     If the call succeeds, image present of the registered scanout resources
@@ -367,13 +369,12 @@ namespace NvAPIWrapper.Native
         /// <param name="pParams">Parameters to join presentBarrier.</param>
         /// <exception cref="NVIDIAApiException">Thrown if the operation failed.</exception>
         public static void JoinPresentBarrier(
-            PresentBarrierClientHandle presentBarrierClient,
-            IntPtr pParams
+            PresentBarrierClientHandle presentBarrierClient
         )
         {
             var status = _joinPresentBarrierDelegate(
                 presentBarrierClient,
-                pParams
+                _joinParams
             );
 
             if (status != Status.Ok)

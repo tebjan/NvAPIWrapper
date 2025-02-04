@@ -115,7 +115,7 @@ namespace NvAPIWrapper.Native.Delegates
         [FunctionId(FunctionId.NvAPI_JoinPresentBarrier)]
         public delegate Status NvAPI_JoinPresentBarrier(
             [In] PresentBarrierClientHandle presentBarrierClient,
-            [In] IntPtr pParams
+            [In] JoinPresentBarrierParams pParams
         );
 
         [FunctionId(FunctionId.NvAPI_LeavePresentBarrier)]
