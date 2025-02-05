@@ -42,19 +42,25 @@ namespace NvAPIWrapper.Native
         /// Error: the communication with the D3D driver failed, SwapGroup/SwapBarrier may not be possible.
         /// ApiNotInitialized: NvAPI was not yet initialized.</returns>
         ///</returns> 
-        public static Status D3D1XPresent(
+        public static void D3D1XPresent(
             IntPtr d3dDevice,
             IntPtr dxgiSwapChain,
             uint syncInterval,
             uint flags
         )
         {
-            return _presentDelegate(
+            var status = _presentDelegate(
                 d3dDevice,
                 dxgiSwapChain,
                 syncInterval,
                 flags
             );
+
+            if (status != Status.Ok)
+            {
+                throw new NVIDIAApiException(status);
+            }
+
         }
 
         private static readonly Delegates.D3D.NvAPI_D3D1x_QueryFrameCount _queryFrameCountDelegate =
