@@ -15,22 +15,6 @@ namespace NvAPIWrapper.Native.Delegates
 {
     internal static class D3D
     {
-        [FunctionId(FunctionId.NvAPI_D3D9_CreateSwapChain)]
-        public delegate Status NvAPI_D3D9_CreateSwapChain(
-            [In] StereoHandle stereoHandle,
-            [In] IntPtr d3dPresentParameters,
-            [Out] out IntPtr direct3DSwapChain9,
-            [In] StereoSwapChainMode mode
-        );
-
-        [FunctionId(FunctionId.NvAPI_D3D1x_CreateSwapChain)]
-        public delegate Status NvAPI_D3D1x_CreateSwapChain(
-            [In] StereoHandle stereoHandle,
-            [In] IntPtr dxgiSwapChainDescription,
-            [Out] out IntPtr dxgiSwapChain,
-            [In] StereoSwapChainMode mode
-        );
-
         [FunctionId(FunctionId.NvAPI_D3D_SetFPSIndicatorState)]
         public delegate Status NvAPI_D3D_SetFPSIndicatorState(
             [In] IntPtr d3dDevice,
