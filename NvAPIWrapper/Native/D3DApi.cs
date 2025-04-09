@@ -372,7 +372,6 @@ namespace NvAPIWrapper.Native
         ///     from this client is under the synchronization of presentBarrier.
         /// </summary>
         /// <param name="presentBarrierClient">An NvPresentBarrierClientHandle handle created by NvAPI_xxxx_CreatePresentBarrierClient.</param>
-        /// <param name="pParams">Parameters to join presentBarrier.</param>
         /// <exception cref="NVIDIAApiException">Thrown if the operation failed.</exception>
         public static void JoinPresentBarrier(
             PresentBarrierClientHandle presentBarrierClient

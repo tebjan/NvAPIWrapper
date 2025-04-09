@@ -60,7 +60,7 @@ namespace NvAPIWrapper.Native.Delegates
             [In] IntPtr d3dDevice,
             [In] IntPtr dxgiSwapChain,
             [In] uint group,
-            [In] bool blocking
+            [In, MarshalAs(UnmanagedType.Bool)] bool blocking
         );
 
         [FunctionId(FunctionId.NvAPI_D3D1x_BindSwapBarrier)]
