@@ -4,6 +4,38 @@ using System.Text;
 
 namespace NvAPIWrapper.Native.GSync.Enums;
 
+[Flags]
+public enum GSyncControlBitFieldsV1 : uint
+{
+    None = 0,
+    InterlaceMode = 1 << 0,
+    SyncSourceIsOutput = 1 << 1,
+    StereoLock = 1 << 2,
+    FrameSlaveEnabled = 1 << 3,
+    FrameMasterEnabled = 1 << 4,
+    ExternalHouseSyncEnabled = 1 << 5,
+    RJ45OutputImpedance50Ohm = 1 << 6,
+    RJ45InputImpedance50Ohm = 1 << 7
+}
+
+[Flags]
+public enum GSyncControlBitFieldsV2 : uint
+{
+    None = 0,
+    InterlaceMode = 1 << 0,
+    SyncSourceIsOutput = 1 << 1,
+    StereoLock = 1 << 2,
+    FrameSlaveEnabled = 1 << 3,
+    FrameMasterEnabled = 1 << 4,
+    ExternalHouseSyncEnabled = 1 << 5,
+    RJ45OutputImpedance50Ohm = 1 << 6,
+    RJ45InputImpedance50Ohm = 1 << 7,
+    FrameNumberEmulationEnabled = 1 << 8,
+    SyncOutSignalEnabled = 1 << 9,
+    ForceSoftwareInterlacedMode = 1 << 10,
+    EnableStereoExpansionMode = 1 << 11
+}
+
 public enum GSyncPolarity : uint
 {
     RisingEdge = 0,    // Was NVAPI_GSYNC_POLARITY_RISING_EDGE
