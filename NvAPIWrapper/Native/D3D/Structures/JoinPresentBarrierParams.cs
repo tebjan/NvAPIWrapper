@@ -42,7 +42,7 @@ namespace NvAPIWrapper.Native.D3D.Structures
         {
             // Typically, NVAPI uses a macro where the version is determined by struct size.
             // If needed, implement logic here to match the C macro behavior.
-            return ((uint)Marshal.SizeOf(structType) | (version << 16));
+            return (uint)Marshal.SizeOf(structType) | (version << 16);
         }
     }
 }
