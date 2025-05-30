@@ -4,25 +4,19 @@ using NvAPIWrapper.Native.GSync.Enums;
 using System;
 using System.Runtime.InteropServices;
 using NvAPIWrapper.Native.Helpers;
+using NvAPIWrapper.Native.Interfaces;
 
 namespace NvAPIWrapper.Native.GSync.Structures
 {
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(1)]
-    public struct GSyncDelay
+    [StructureVersion(1)] // NV_GSYNC_DELAY_VER
+    public struct GSyncDelay : IInitializable
     {
         internal StructureVersion _Version;
         public uint NumLines;
         public uint NumPixels;
-        public uint MaxLines;
-        public uint MinLines;
-        public uint MaxPixels;
-        public uint MinPixels;
-
-        public GSyncDelay()
-        {
-            this = typeof(GSyncDelay).Instantiate<GSyncDelay>();
-        }
+        public uint MaxLines;    // Read-only, updated by GetControlParameters
+        public uint MinPixels;   // Read-only, updated by GetControlParameters
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
@@ -76,173 +70,118 @@ namespace NvAPIWrapper.Native.GSync.Structures
         }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 8)] // Changed from Pack = 1 to Pack = 8
-    [StructureVersion(1)]
-    public struct GSyncControlParametersV1
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    [StructureVersion(1)] // NV_GSYNC_GPU_VER
+    public struct GSyncGpu : IInitializable // Renamed from GSyncGpuV1, as this is THE GSyncGpu for GetTopology
+    {
+        internal StructureVersion _Version;
+        public IntPtr PhysicalGpuHandle;       // NvPhysicalGpuHandle hPhysicalGpu;
+        public GSyncGpuTopologyConnector Connector; // NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR connector;
+        public IntPtr ProxyPhysicalGpuHandle;  // NvPhysicalGpuHandle hProxyPhysicalGpu;
+        private uint _bitFields;                // For isSynced : 1; reserved : 31;
+
+        public bool IsSynced
+        {
+            get => (_bitFields & 0x1) != 0;
+            set => _bitFields = (_bitFields & ~0x1u) | (value ? 1u : 0u);
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    [StructureVersion(1)] // NV_GSYNC_DISPLAY_VER
+    public struct GSyncDisplay : IInitializable // Renamed from GSyncDisplayV1
+    {
+        internal StructureVersion _Version;
+        public uint DisplayId;                  // NvU32 displayId;
+        private uint _bitFields;                // For isMasterable : 1; reserved : 31;
+        public GSyncDisplaySyncState SyncState; // NVAPI_GSYNC_DISPLAY_SYNC_STATE syncState;
+
+        public bool IsMasterable // Read-only property as per C++ comment
+        {
+            get => (_bitFields & 0x1) != 0;
+            // No public setter for read-only or reserved bits
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    [StructureVersion(1)] // NV_GSYNC_CONTROL_PARAMS_VER1
+    public struct GSyncControlParametersV1 : IInitializable
     {
         internal StructureVersion _Version;
         public GSyncPolarity Polarity;
-        public GSyncVideoMode VideoMode;
+        public GSyncVideoMode VideoMode; // vmode
         public uint Interval;
         public GSyncSyncSource Source;
-        public uint PackedBitFields1; // C compiler handles bitfield layout within this uint
+        public GSyncControlFlagsV1 ControlFlags; // Replaces PackedBitFields1
         public GSyncDelay SyncSkew;
         public GSyncDelay StartupDelay;
-        public uint WatchDogTimer;
-
-        public GSyncControlParametersV1()
-        {
-            this = typeof(GSyncControlParametersV1).Instantiate<GSyncControlParametersV1>();
-        }
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 8)] // Changed from Pack = 1 to Pack = 8
-    [StructureVersion(2)]
-    public struct GSyncControlParametersV2
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    [StructureVersion(2)] // NV_GSYNC_CONTROL_PARAMS_VER2 (typedef'd to NV_GSYNC_CONTROL_PARAMS)
+    public struct GSyncControlParametersV2 : IInitializable
     {
         internal StructureVersion _Version;
         public GSyncPolarity Polarity;
-        public GSyncVideoMode VideoMode;
+        public GSyncVideoMode VideoMode; // vmode
         public uint Interval;
         public GSyncSyncSource Source;
-        public uint PackedBitFields1; // C compiler handles bitfield layout within this uint
+        public GSyncControlFlagsV2 ControlFlags; // Replaces PackedBitFields1, uses V2 flags enum
         public GSyncDelay SyncSkew;
         public GSyncDelay StartupDelay;
-        public uint WatchDogTimer;
-        public uint SyncOutPulseWidth;
-        public uint SyncOutPolarity;
-
-        public GSyncControlParametersV2()
-        {
-            this = typeof(GSyncControlParametersV2).Instantiate<GSyncControlParametersV2>();
-        }
+        public GSyncMultiplyDivideMode MultiplyDivideMode; // New in C++ V2
+        public byte MultiplyDivideValue;                 // New in C++ V2 (NvU8)
+        // Ensure no other fields are accidentally carried over from previous incorrect definitions
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(1)]
-    public struct GSyncStatusParametersV1
+    [StructureVersion(1)] // NV_GSYNC_STATUS_VER
+    public struct GSyncBoardStatus : IInitializable // Renamed from GSyncStatus
     {
         internal StructureVersion _Version;
-        public uint RefreshRate;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC, ArraySubType = UnmanagedType.U4)]
-        public GSyncRJ45IO[] RJ45PortStates;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC, ArraySubType = UnmanagedType.U4)]
-        public uint[] RJ45EthernetConnections;
-        public uint HouseSyncIncomingFrequencyHz;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsHouseSyncSignalPresent;
-
-        public GSyncStatusParametersV1()
-        {
-            this = typeof(GSyncStatusParametersV1).Instantiate<GSyncStatusParametersV1>();
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(2)]
-    public struct GSyncStatusParametersV2
-    {
-        internal StructureVersion _Version;
-        public uint RefreshRate;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC, ArraySubType = UnmanagedType.U4)]
-        public GSyncRJ45IO[] RJ45PortStates;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC, ArraySubType = UnmanagedType.U4)]
-        public uint[] RJ45EthernetConnections;
-        public uint HouseSyncIncomingFrequencyHz;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsHouseSyncSignalPresent;
-        public uint SyncOutPulseWidth;
-        public uint SyncOutPolarity;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsSyncOutSignalEnabled;
-
-        public GSyncStatusParametersV2()
-        {
-            this = typeof(GSyncStatusParametersV2).Instantiate<GSyncStatusParametersV2>();
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(1)]
-    public struct GSyncBoardStatus
-    {
-        internal StructureVersion _Version;
-        [MarshalAs(UnmanagedType.Bool)]
+        [MarshalAs(UnmanagedType.Bool)] // NvU32 bIsSynced
         public bool IsTimingInSync;
-        [MarshalAs(UnmanagedType.Bool)]
+        [MarshalAs(UnmanagedType.Bool)] // NvU32 bIsStereoSynced
         public bool IsStereoSyncedToMaster;
-        [MarshalAs(UnmanagedType.Bool)]
+        [MarshalAs(UnmanagedType.Bool)] // NvU32 bIsSyncSignalAvailable
         public bool IsSyncSignalAvailable;
-
-        public GSyncBoardStatus()
-        {
-            this = typeof(GSyncBoardStatus).Instantiate<GSyncBoardStatus>();
-        }
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(1)]
-    public struct GSyncGpuV1
+    [StructureVersion(1)] // NV_GSYNC_STATUS_PARAMS_VER1
+    public struct GSyncStatusParametersV1 : IInitializable
     {
         internal StructureVersion _Version;
-        public IntPtr PhysicalGpuHandle;
-        public uint DisplayId;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsSynced;
-
-        public GSyncGpuV1()
-        {
-            this = typeof(GSyncGpuV1).Instantiate<GSyncGpuV1>();
-        }
+        public uint RefreshRate;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC)]
+        public GSyncRJ45IO[] RJ45_IO; // Field name matches C++
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC)]
+        public uint[] RJ45_Ethernet; // Field name matches C++
+        public uint HouseSyncIncoming; // Renamed to match C++ (was HouseSyncIncomingFrequencyHz)
+        [MarshalAs(UnmanagedType.Bool)] // NvU32 bHouseSync
+        public bool IsHouseSyncConnected; // Renamed to match C++ (was IsHouseSyncSignalPresent)
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(2)]
-    public struct GSyncGpuV2
+    [StructureVersion(2)] // NV_GSYNC_STATUS_PARAMS_VER2 (typedef'd to NV_GSYNC_STATUS_PARAMS)
+    public struct GSyncStatusParametersV2 : IInitializable
     {
         internal StructureVersion _Version;
-        public IntPtr PhysicalGpuHandle;
-        public uint DisplayId;
+        public uint RefreshRate;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC)]
+        public GSyncRJ45IO[] RJ45_IO;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_RJ45_PER_GSYNC)]
+        public uint[] RJ45_Ethernet;
+        public uint HouseSyncIncoming;
         [MarshalAs(UnmanagedType.Bool)]
-        public bool IsSynced;
-        public GpuConnectorType ConnectorType;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsMultiGPUBoard;
+        public bool IsHouseSyncConnected; // bHouseSync
+        private uint _bitFields;          // For bInternalSlave : 1; reserved : 31;
 
-        public GSyncGpuV2()
+        public bool IsInternalSlave
         {
-            this = typeof(GSyncGpuV2).Instantiate<GSyncGpuV2>();
+            get => (_bitFields & 0x1) != 0;
+            set => _bitFields = (_bitFields & ~0x1u) | (value ? 1u : 0u);
         }
     }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(1)]
-    public struct GSyncDisplayV1
-    {
-        internal StructureVersion _Version;
-        public IntPtr DisplayHandle;
-        public GSyncDisplaySyncState SyncState;
-
-        public GSyncDisplayV1()
-        {
-            this = typeof(GSyncDisplayV1).Instantiate<GSyncDisplayV1>();
-        }
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 8)]
-    [StructureVersion(2)]
-    public struct GSyncDisplayV2
-    {
-        internal StructureVersion _Version;
-        public IntPtr DisplayHandle;
-        public GSyncDisplaySyncState SyncState;
-        public GpuConnectorType ConnectorType;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool IsMultiGPUBoard;
-
-        public GSyncDisplayV2()
-        {
-            this = typeof(GSyncDisplayV2).Instantiate<GSyncDisplayV2>();
-        }
-    }
+}
 }

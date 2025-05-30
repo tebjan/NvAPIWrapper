@@ -3,6 +3,53 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace NvAPIWrapper.Native.GSync.Enums;
+// NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR
+public enum GSyncGpuTopologyConnector : uint
+{
+    None = 0,       // NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR_NONE
+    Primary = 1,    // NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR_PRIMARY
+    Secondary = 2,  // NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR_SECONDARY
+    Tertiary = 3,   // NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR_TERTIARY
+    Quarternary = 4 // NVAPI_GSYNC_GPU_TOPOLOGY_CONNECTOR_QUARTERNARY
+}
+
+
+// NVAPI_GSYNC_MULTIPLY_DIVIDE_MODE
+public enum GSyncMultiplyDivideMode : uint
+{
+    UndefinedMode = 0, // NVAPI_GSYNC_UNDEFINED_MODE
+    MultiplyMode = 1,  // NVAPI_GSYNC_MULTIPLY_MODE
+    DivideMode = 2     // NVAPI_GSYNC_DIVIDE_MODE
+}
+
+
+[Flags]
+public enum GSyncControlFlagsV1 : uint
+{
+    None = 0,
+    InterlaceMode = 1 << 0,      // interlaceMode:1
+    SyncSourceIsOutput = 1 << 1  // syncSourceIsOutput:1
+                                 // reserved:30
+}
+
+[Flags]
+public enum GSyncControlFlagsV2 : uint
+{
+    None = 0,
+    InterlaceMode = 1 << 0,      // interlaceMode:1
+    SyncSourceIsOutput = 1 << 1  // syncSourceIsOutput:1
+                                 // reserved:30
+                                 // Note: The C++ NV_GSYNC_CONTROL_PARAMS_V2 shows the same bitfields as V1.
+                                 // The multiplyDivideMode and multiplyDivideValue are separate fields, not bitfields.
+}
+
+[Flags]
+public enum GSyncStatusFlagsV2 : uint 
+{
+    None = 0,
+    InternalSlave = 1 << 0 // bInternalSlave : 1
+                           // reserved : 31
+}
 
 public enum GSyncPolarity : uint
 {

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
 	<LangVersion>latest</LangVersion>
-    <Version>0.8.1.110</Version>
+    <Version>0.8.1.111</Version>
     <Company>falahati.net</Company>
     <Description>NvAPIWrapper is a .Net wrapper for NVIDIA public API</Description>
     <Authors>Soroush Falahati</Authors>
