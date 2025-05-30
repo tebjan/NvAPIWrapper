@@ -21,53 +21,47 @@ public struct GSyncDelay : IInitializable
 
 [StructLayout(LayoutKind.Sequential, Pack = 8)]
 [StructureVersion(1)]
-public struct GSyncCapabilitiesV1
+public struct GSyncCapabilitiesV1 : IInitializable
 {
-    internal StructureVersion _Version;
+    internal StructureVersion _Version; // Initialized by Instantiate<T>
     public uint BoardId;
-    public uint Revision;
+    public uint Revision;       // In V1, this is likely the full revision
     public uint CapFlags;
-
-    public GSyncCapabilitiesV1()
-    {
-        this = typeof(GSyncCapabilitiesV1).Instantiate<GSyncCapabilitiesV1>();
-    }
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 8)]
 [StructureVersion(2)]
-public struct GSyncCapabilitiesV2
+public struct GSyncCapabilitiesV2 : IInitializable
 {
-    internal StructureVersion _Version;
+    internal StructureVersion _Version; // Initialized by Instantiate<T>
     public uint BoardId;
-    public uint Revision;
+    public uint Revision;       // FPGA major revision
     public uint CapFlags;
-    public uint MaxNumGpus;
-    public uint GSyncGPUPhysIdMask;
-
-    public GSyncCapabilitiesV2()
-    {
-        this = typeof(GSyncCapabilitiesV2).Instantiate<GSyncCapabilitiesV2>();
-    }
+    public uint ExtendedRevision; // FPGA minor revision
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 8)]
 [StructureVersion(3)]
-public struct GSyncCapabilitiesV3
+public struct GSyncCapabilitiesV3 : IInitializable
 {
-    internal StructureVersion _Version;
+    internal StructureVersion _Version; // Initialized by Instantiate<T>
     public uint BoardId;
-    public uint Revision;
+    public uint Revision;       // FPGA major revision
     public uint CapFlags;
-    public uint MaxNumGpus;
-    public uint GSyncGPUPhysIdMask;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = GSyncConstants.NVAPI_MAX_GSYNC_OUTPUTS)]
-    public GpuConnectorType[] GSyncConnectorType;
+    public uint ExtendedRevision; // FPGA minor revision
 
-    public GSyncCapabilitiesV3()
+    // NvU32 bIsMulDivSupported : 1;
+    // NvU32 reserved           : 31;
+    private uint _bitFields;
+
+    public uint MaxMulDivValue;
+
+    public bool IsMulDivSupported
     {
-        this = typeof(GSyncCapabilitiesV3).Instantiate<GSyncCapabilitiesV3>();
+        get => (_bitFields & 0x1) != 0;
+        // No public setter for reserved bits or if this is read-only from API
     }
+    // Add a property for Reserved if needed, though usually not.
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 8)]

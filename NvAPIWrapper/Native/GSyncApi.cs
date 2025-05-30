@@ -130,6 +130,7 @@ public static class GSyncApi
 
     public static void GSyncGetSyncStatus(
         IntPtr hNvGSyncDevice,
+        IntPtr hPhysicalGpu,
         out GSyncBoardStatus syncStatus // Public API uses out for convenience
     )
     {
@@ -137,6 +138,7 @@ public static class GSyncApi
         syncStatus = typeof(GSyncBoardStatus).Instantiate<GSyncBoardStatus>();
         var status = _gsyncGetSyncStatusDelegate(
             hNvGSyncDevice,
+            hPhysicalGpu,
             ref syncStatus // Delegate expects ref
         );
 
@@ -151,14 +153,14 @@ public static class GSyncApi
 
     public static void GSyncGetTopology(
         IntPtr hNvGSyncDevice,
-        out GSyncGpuV2[] gsyncGPUs,
-        out GSyncDisplayV2[] gsyncDisplays
+        out GSyncGpu[] gsyncGPUs,
+        out GSyncDisplay[] gsyncDisplays
     )
     {
         uint gpuCount = 0;
         uint displayCount = 0;
-        GSyncGpuV2[] tempGpus = null;
-        GSyncDisplayV2[] tempDisplays = null;
+        GSyncGpu[] tempGpus = null;
+        GSyncDisplay[] tempDisplays = null;
 
         var status = _gsyncGetTopologyDelegate(
             hNvGSyncDevice,
@@ -170,29 +172,29 @@ public static class GSyncApi
 
         if (status != Status.Ok && status != Status.InvalidArgument && status != Status.ArgumentExceedMaxSize)
         {
-            gsyncGPUs = Array.Empty<GSyncGpuV2>();
-            gsyncDisplays = Array.Empty<GSyncDisplayV2>();
+            gsyncGPUs = Array.Empty<GSyncGpu>();
+            gsyncDisplays = Array.Empty<GSyncDisplay>();
             throw new NVIDIAApiException(status);
         }
 
-        gsyncGPUs = new GSyncGpuV2[gpuCount];
-        gsyncDisplays = new GSyncDisplayV2[displayCount];
+        gsyncGPUs = new GSyncGpu[gpuCount];
+        gsyncDisplays = new GSyncDisplay[displayCount];
 
         if (gpuCount == 0 && displayCount == 0)
         {
             return;
         }
 
-        var gpuStructType = typeof(GSyncGpuV2);
+        var gpuStructType = typeof(GSyncGpu);
         for (int i = 0; i < gpuCount; i++)
         {
-            gsyncGPUs[i] = gpuStructType.Instantiate<GSyncGpuV2>(); // Instantiate sets _Version
+            gsyncGPUs[i] = gpuStructType.Instantiate<GSyncGpu>(); // Instantiate sets _Version
         }
 
-        var displayStructType = typeof(GSyncDisplayV2);
+        var displayStructType = typeof(GSyncDisplay);
         for (int i = 0; i < displayCount; i++)
         {
-            gsyncDisplays[i] = displayStructType.Instantiate<GSyncDisplayV2>(); // Instantiate sets _Version
+            gsyncDisplays[i] = displayStructType.Instantiate<GSyncDisplay>(); // Instantiate sets _Version
         }
 
         status = _gsyncGetTopologyDelegate(
@@ -256,14 +258,14 @@ public static class GSyncApi
         DelegateFactory.GetDelegate<Delegates.GSync.NvAPI_GSync_SetSyncStateSettings>();
 
     public static void GSyncSetSyncStateSettings(
-        GSyncDisplayV2[] pGsyncDisplays, // Caller creates array and uses Instantiate<GSyncDisplayV2>() for elements
+        GSyncDisplay[] pGsyncDisplays, // Caller creates array and uses Instantiate<GSyncDisplay>() for elements
         uint flags = 0
     )
     {
         uint gsyncDisplayCount = (uint)(pGsyncDisplays?.Length ?? 0);
 
         // Caller is responsible for ensuring each element in pGsyncDisplays is properly initialized
-        // (including its _Version) via typeof(GSyncDisplayV2).Instantiate<GSyncDisplayV2>().
+        // (including its _Version) via typeof(GSyncDisplay).Instantiate<GSyncDisplay>().
         var status = _gsyncSetSyncStateSettingsDelegate(
             gsyncDisplayCount,
             pGsyncDisplays,

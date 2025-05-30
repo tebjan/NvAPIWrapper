@@ -47,6 +47,7 @@ internal static class GSync
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate Status NvAPI_GSync_GetSyncStatus(
         [In] IntPtr hNvGSyncDevice,
+        [In] IntPtr hPhysicalGpu, // NvPhysicalGpuHandle hPhysicalGpu
         [In, Out] ref GSyncBoardStatus syncStatus
     );
 
@@ -55,9 +56,9 @@ internal static class GSync
     public delegate Status NvAPI_GSync_GetTopology(
         [In] IntPtr hNvGSyncDevice,
         [In, Out] ref uint gsyncGpuCount,
-        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] GSyncGpuV2[] gsyncGPUs,
+        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] GSyncGpu[] gsyncGPUs,
         [In, Out] ref uint gsyncDisplayCount,
-        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GSyncDisplayV2[] gsyncDisplays
+        [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] GSyncDisplay[] gsyncDisplays
     );
 
     [FunctionId(FunctionId.NvAPI_GSync_QueryCapabilities)]
@@ -78,7 +79,7 @@ internal static class GSync
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate Status NvAPI_GSync_SetSyncStateSettings(
         [In] uint gsyncDisplayCount,
-        [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] GSyncDisplayV2[] pGsyncDisplays,
+        [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] GSyncDisplay[] pGsyncDisplays,
         [In] uint flags
     );
 }
